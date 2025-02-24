@@ -1,0 +1,5 @@
+datasources:  
+  - name: infinity
+    uid: infinity-test
+    type: yesoreyeram-infinity-datasource
+    editable: true
