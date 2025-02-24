@@ -47,7 +47,7 @@ def convert_json_to_csv(json_file='auction.json', output_directory='./years'):
     df.to_csv(csv_filename, index=False, encoding="utf-8", quoting=1)
     print(f"✅ CSV file saved as {csv_filename}")
 
-def merge_csv_files(directory='./years', output_filename='merged.csv'):
+def merge_csv_files(directory='./years', output_filename='./years/final/merged.csv'):
     """
     Merge all CSV files in the specified directory into a single CSV file.
     
@@ -70,11 +70,19 @@ def merge_csv_files(directory='./years', output_filename='merged.csv'):
     all_dfs = []
     for file in all_files:
         file_path = os.path.join(directory, file)
-        df = pd.read_csv(file_path, encoding="utf-8")
+        df = pd.read_csv(file_path, encoding="utf-8").dropna(axis=1, how='all')
         df["source_file"] = file  # Add a column indicating the source file
         all_dfs.append(df)
     
     merged_df = pd.concat(all_dfs, ignore_index=True)
+    
+    if "序號" in merged_df.columns:
+        merged_df = merged_df.drop(columns=["序號"])
+        
+    if "開標日期" in merged_df.columns:
+        merged_df["開標日期"] = pd.to_datetime(merged_df["開標日期"], format="%Y/%m/%d", errors="coerce")
+        merged_df = merged_df.sort_values(by="開標日期", ascending=False)
+    
     merged_df.to_csv(output_filename, index=False, encoding="utf-8", quoting=1)
     print(f"✅ Merged CSV file saved as {output_filename}")
     return merged_df
