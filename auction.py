@@ -13,7 +13,7 @@ def get_roc_year():
     current_year = datetime.now().year
     return current_year - 1911
 
-def fetch_auction_data(url='https://www.twse.com.tw/zh/announcement/auction', output_file='auction.json'):
+def fetch_auction_data(url='https://www.twse.com.tw/zh/announcement/auction', output_file='now_year_auction.json'):
     """
     Fetch auction data from the TWSE API and save it as a JSON file.
     
@@ -29,7 +29,7 @@ def fetch_auction_data(url='https://www.twse.com.tw/zh/announcement/auction', ou
     else:
         print(f"❌ Failed to fetch data, status code: {response.status_code}")
 
-def convert_json_to_csv(json_file='auction.json', output_directory='./years'):
+def convert_json_to_csv(json_file='now_year_auction.json', output_directory='./years'):
     """
     Convert JSON data to CSV format and save it in a directory named after the current ROC year.
     
