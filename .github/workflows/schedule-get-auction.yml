@@ -1,0 +1,41 @@
+name: Schedule-Get-Auction
+
+on:
+  schedule: 
+    - cron: "*/2 * * * *"
+  workflow_dispatch:  # 允許手動觸發
+
+jobs:
+  craw-auction:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python: [ 3.13 ]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Set current date as env variable
+        run: echo "CURRENT_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt || echo "No dependencies found"
+
+      - name: Run Python
+        run: python auction.py
+      
+      - name: Git Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: automated generate data with ${{ env.CURRENT_DATE }}
