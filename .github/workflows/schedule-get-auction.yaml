@@ -2,8 +2,8 @@ name: Schedule-Get-Auction
 
 on:
   schedule: 
-    - cron: "*/2 * * * *"
-  workflow_dispatch:  # 允許手動觸發
+    - cron: "0 0 */2 * *" # every 2 days
+  workflow_dispatch:  # allow manual trigger
 
 jobs:
   craw-auction:
