@@ -1,9 +1,19 @@
 # General
 .DS_Store
 
-
-# Environments
+# Python
 .venv
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+
+.terraform.lock.hcl
+*.tfvars
+
 
 # Local file
 now_year_auction.json
+READMETEST.md
