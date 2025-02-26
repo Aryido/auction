@@ -1624,12 +1624,12 @@
     ]
   },
   "time": {
-    "from": "2023-12-29T16:00:00.000Z",
-    "to": "now"
+    "from": "2020-02-25T16:00:00.000Z",
+    "to": "2025-12-26T15:59:59.000Z"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "auction-2025",
+  "title": "auction",
   "uid": "dee0wffihtz40d",
   "version": 1,
   "weekStart": ""
