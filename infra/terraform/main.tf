@@ -145,21 +145,3 @@ resource "google_compute_instance" "auction" {
     ssh-keys = "${local.ssh_user}:${local_file.public_key.content}"
   }
 }
-
-resource "google_dns_managed_zone" "auction" {
-  project  = data.google_project.project.project_id
-  name     = "aryido"
-  dns_name = var.dns_name
-}
-
-resource "google_dns_record_set" "auction" {
-  project      = data.google_project.project.project_id
-  managed_zone = google_dns_managed_zone.auction.name
-  name         = var.dns_name
-  type         = "A"
-  ttl          = 300
-
-  rrdatas = [
-    module.global_addresses.addresses[0],
-  ]
-}
