@@ -1,0 +1,6 @@
+- name: Test GCP VM Connection
+  hosts: grafana
+  become: true
+  tasks:
+    - name: Ping VM
+      ping:

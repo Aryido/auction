@@ -1,0 +1,11 @@
+- name: Clone GitHub Repo
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ repo_dest }}"
+    force: yes
+
+- name: Docker Compose Up
+  shell: |
+    sudo docker-compose up -d
+  args:
+    chdir: "{{ compose_folder }}"
