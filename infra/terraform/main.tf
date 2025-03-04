@@ -148,9 +148,8 @@ resource "google_compute_instance" "auction" {
 
 resource "google_dns_managed_zone" "auction" {
   project  = data.google_project.project.project_id
-  name     = random_id.deployment.hex
+  name     = "aryido"
   dns_name = var.dns_name
-
 }
 
 resource "google_dns_record_set" "auction" {
