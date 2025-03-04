@@ -6,14 +6,25 @@ data "google_project" "project" {
   project_id = var.project_id
 }
 
+resource "random_id" "deployment" {
+  byte_length = 8
+}
+
+locals {
+  ssh_user             = "dev"
+  private_key_filename = "${random_id.deployment.hex}_ansible_gcp"
+  public_key_filename  = "${random_id.deployment.hex}_ansible_gcp.pub"
+}
+
 resource "google_service_account" "auction" {
   project    = data.google_project.project.project_id
-  account_id = "auction-sa"
+  account_id = "auction-${random_id.deployment.hex}"
 }
 
 resource "google_project_iam_member" "auction" {
   for_each = toset([
     "roles/compute.admin",
+    "roles/iam.serviceAccountUser",
   ])
 
   project = data.google_project.project.project_id
@@ -34,21 +45,20 @@ module "global_addresses" {
 
 resource "google_compute_network" "auction" {
   project                 = data.google_project.project.project_id
-  name                    = "auction"
+  name                    = "auction-${random_id.deployment.hex}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "auction" {
-  name          = "auction"
+  name          = "auction-${random_id.deployment.hex}"
   network       = google_compute_network.auction.id
   region        = var.region
   ip_cidr_range = "10.2.0.0/16"
 }
 
-
 resource "google_compute_firewall" "auction_ssh" {
   project = data.google_project.project.project_id
-  name    = "auction-ssh"
+  name    = "auction-${random_id.deployment.hex}-ssh"
   network = google_compute_network.auction.self_link
 
   allow {
@@ -58,15 +68,15 @@ resource "google_compute_firewall" "auction_ssh" {
     ]
   }
 
-  # IAP TCP forwarding IP range.
   source_ranges = [
-    "35.235.240.0/20",
+    "35.235.240.0/20",  # IAP TCP forwarding IP range.
+    "0.0.0.0/0"
   ]
 }
 
 resource "google_compute_firewall" "grafana" {
   project = data.google_project.project.project_id
-  name    = "grafana"
+  name    = "grafana-${random_id.deployment.hex}"
   network = google_compute_network.auction.self_link
 
   allow {
@@ -78,21 +88,38 @@ resource "google_compute_firewall" "grafana" {
 
   source_ranges = [
     "0.0.0.0/0",
-    #module.global_addresses.addresses[0] # ???
   ]
+
   target_tags = ["grafana"]
+}
+
+resource "tls_private_key" "auction" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "local_file" "private_key" {
+  content         = tls_private_key.auction.private_key_pem
+  filename        = pathexpand("~/.ssh/${local.private_key_filename}")
+  file_permission = "0600"
+}
+
+resource "local_file" "public_key" {
+  content         = tls_private_key.auction.public_key_openssh
+  filename        = pathexpand("~/.ssh/${local.public_key_filename}")
+  file_permission = "0600"
 }
 
 resource "google_compute_instance" "auction" {
   project = data.google_project.project.project_id
 
-  name         = "auction"
+  name         = "auction-${random_id.deployment.hex}"
   zone         = var.zone
   machine_type = "e2-small"
 
   boot_disk {
     initialize_params {
-      image = "projects/cos-cloud/global/images/family/cos-stable"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
     }
   }
 
@@ -103,10 +130,37 @@ resource "google_compute_instance" "auction" {
     }
   }
 
-  tags = ["grafana"]
-
   service_account {
     email  = google_service_account.auction.email
     scopes = ["cloud-platform"]
   }
+
+  labels = {
+    ansible = "ansible"
+  }
+
+  tags = ["grafana"]
+
+  metadata = {
+    ssh-keys = "${local.ssh_user}:${local_file.public_key.content}"
+  }
+}
+
+resource "google_dns_managed_zone" "auction" {
+  project  = data.google_project.project.project_id
+  name     = random_id.deployment.hex
+  dns_name = var.dns_name
+
+}
+
+resource "google_dns_record_set" "auction" {
+  project      = data.google_project.project.project_id
+  managed_zone = google_dns_managed_zone.auction.name
+  name         = var.dns_name
+  type         = "A"
+  ttl          = 300
+
+  rrdatas = [
+    module.global_addresses.addresses[0],
+  ]
 }

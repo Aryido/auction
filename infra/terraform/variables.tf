@@ -18,3 +18,7 @@ variable "zone" {
   type        = string
   default     = "asia-east1-a"
 }
+
+variable "dns_name" {
+  type        = string
+}

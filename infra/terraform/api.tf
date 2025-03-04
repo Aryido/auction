@@ -6,5 +6,6 @@ module "project_services" {
   activate_apis = [
     "compute.googleapis.com",
     "iam.googleapis.com",
+    "dns.googleapis.com",
   ]
 }
