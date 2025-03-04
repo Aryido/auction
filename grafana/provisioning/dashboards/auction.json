@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -1020,7 +1020,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 24
       },
       "id": 9,
       "panels": [],
@@ -1068,7 +1068,7 @@
         "h": 24,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 25
       },
       "id": 1,
       "options": {
@@ -1123,25 +1123,25 @@
             "excludeByName": {
               "source_file": true,
               "主辦券商": false,
-              "保證金成數(%)": false,
+              "保證金成數(%)": true,
               "取消競價拍賣(流標或取消)": false,
               "合格投標數量(張)": true,
               "得標加權平均價格(元)": true,
-              "得標手續費率(%)": false,
+              "得標手續費率(%)": true,
               "得標總金額(元)": true,
               "承銷價格(元)": true,
               "投標結束日": false,
               "投標開始日": false,
               "撥券日期(上市、上櫃日期)": false,
               "最低得標價格(元)": true,
-              "最低投標價格(元)": false,
-              "最低每標單投標數量(張)": false,
+              "最低投標價格(元)": true,
+              "最低每標單投標數量(張)": true,
               "最高得標價格(元)": true,
-              "最高投(得)標數量(張)": false,
-              "每一投標單投標處理費(元)": false,
+              "最高投(得)標數量(張)": true,
+              "每一投標單投標處理費(元)": true,
               "發行市場": false,
               "發行性質": false,
-              "競拍數量(張)": false,
+              "競拍數量(張)": true,
               "競拍方式": false,
               "總合格件": true,
               "開標日期": false
@@ -1326,7 +1326,266 @@
         "h": 24,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 49
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "variance"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "開標日期"
+          }
+        ]
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "columns": [],
+          "csv_options": {
+            "relax_column_count": true,
+            "skip_empty_lines": true,
+            "skip_lines_with_error": true
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "simple",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "csv",
+          "uql": "parse-csv",
+          "url": "${url}",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "charge",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "source_file": true,
+              "主辦券商": true,
+              "保證金成數(%)": false,
+              "取消競價拍賣(流標或取消)": false,
+              "合格投標數量(張)": true,
+              "得標加權平均價格(元)": true,
+              "得標手續費率(%)": false,
+              "得標總金額(元)": true,
+              "承銷價格(元)": true,
+              "投標結束日": true,
+              "投標開始日": true,
+              "撥券日期(上市、上櫃日期)": true,
+              "最低得標價格(元)": true,
+              "最低投標價格(元)": false,
+              "最低每標單投標數量(張)": false,
+              "最高得標價格(元)": true,
+              "最高投(得)標數量(張)": false,
+              "每一投標單投標處理費(元)": false,
+              "發行市場": true,
+              "發行性質": true,
+              "競拍數量(張)": false,
+              "競拍方式": true,
+              "總合格件": true,
+              "證券代號": true,
+              "開標日期": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "source_file": 25,
+              "主辦券商": 16,
+              "保證金成數(%)": 11,
+              "取消競價拍賣(流標或取消)": 17,
+              "合格投標數量(張)": 20,
+              "得標加權平均價格(元)": 23,
+              "得標手續費率(%)": 9,
+              "得標總金額(元)": 18,
+              "承銷價格(元)": 24,
+              "投標結束日": 2,
+              "投標開始日": 1,
+              "撥券日期(上市、上櫃日期)": 3,
+              "最低得標價格(元)": 21,
+              "最低投標價格(元)": 6,
+              "最低每標單投標數量(張)": 7,
+              "最高得標價格(元)": 22,
+              "最高投(得)標數量(張)": 8,
+              "每一投標單投標處理費(元)": 10,
+              "發行市場": 13,
+              "發行性質": 14,
+              "競拍數量(張)": 12,
+              "競拍方式": 15,
+              "總合格件": 19,
+              "證券代號": 5,
+              "證券名稱": 4,
+              "開標日期": 0
+            },
+            "renameByName": {
+              "開標日期": ""
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "競拍數量(張)"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "最低投標價格(元)"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "最高得標價格(元)"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "得標加權平均價格(元)"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "開標日期"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "得標總金額(元)"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "開標日期"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": "${__from}"
+                  }
+                },
+                "fieldName": "開標日期"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": "${__to}"
+                  }
+                },
+                "fieldName": "開標日期"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "開標日期"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "YYYY-MM-DD",
+            "timeField": "開標日期",
+            "timezone": "",
+            "useTimezone": true
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "PD79987051A2552AC"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text",
+              "wrapText": false
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 24,
+        "w": 24,
+        "x": 0,
+        "y": 73
       },
       "id": 10,
       "options": {
