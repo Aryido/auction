@@ -2,7 +2,7 @@ terraform {
   required_version = "1.10.5"
 
   backend "gcs" {
-    bucket  = "decisive-post-452103-s7-tf-state"
+    bucket  = "<YOUR_BUCKET_NAME>"
     prefix  = "terraform/state"
   }
 
