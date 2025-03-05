@@ -93,6 +93,25 @@ resource "google_compute_firewall" "grafana" {
   target_tags = ["grafana"]
 }
 
+resource "google_compute_firewall" "nginx" {
+  project = data.google_project.project.project_id
+  name    = "nginx-${random_id.deployment.hex}"
+  network = google_compute_network.auction.self_link
+
+  allow {
+    protocol = "tcp"
+    ports = [
+      80,
+    ]
+  }
+
+  source_ranges = [
+    "0.0.0.0/0",
+  ]
+
+  target_tags = ["nginx"]
+}
+
 resource "tls_private_key" "auction" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -135,11 +154,10 @@ resource "google_compute_instance" "auction" {
     scopes = ["cloud-platform"]
   }
 
-  labels = {
-    ansible = "ansible"
-  }
-
-  tags = ["grafana"]
+  tags = [
+    "grafana",
+    "nginx",
+  ]
 
   metadata = {
     ssh-keys = "${local.ssh_user}:${local_file.public_key.content}"
