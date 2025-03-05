@@ -4,7 +4,7 @@
   vars:
     repo_url: https://github.com/Aryido/auction
     repo_dest: /home/auction
-    compose_folder: /home/auction/grafana
+    compose_folder: /home/auction/docker
   roles:
     - setup_env
     - deploy_grafana
