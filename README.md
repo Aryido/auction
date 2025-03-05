@@ -61,9 +61,27 @@ ansible-playbook ./playbooks/site.yaml
 
 # Acknowledgements
 
-- Grafana
-- Ansible
-- Terraform
+## Cloud
 - GCP
+  - global address
+  - VPC
+  - firewall rule
+  - compute instance
+
+## Containerization
+- Docker
+  - docker-compose
+
+## Infrastructure as Code (IaC)
+- Terraform
+- Ansible
+
+## CI/CD
 - GitHub Actions
+
+## Global Network
+- Nginx
 - Cloudflare
+
+## Application
+- Grafana
