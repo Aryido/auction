@@ -2,7 +2,7 @@
 
 This project automates the fetching, storage, and visualization of auction data from the [TWSE API](https://www.twse.com.tw/zh/announcement/auction.html). The data is visualized using Grafana, which is deployed on a GCP VM managed by Ansible and provisioned by Terraform.
 
-[Grafana Dashboard](http://aryido.org:3000/login) (account: **viewer** ; password: **viewer**)
+[Grafana Dashboard](http://aryido.org/login) (account: **viewer** ; password: **viewer**)
 
 ![Grafana Dashboard1](pictures/1.png)
 ![Grafana Dashboard2](pictures/2.png)
