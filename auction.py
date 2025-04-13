@@ -21,7 +21,7 @@ def fetch_auction_data(url='https://www.twse.com.tw/zh/announcement/auction', ou
         url (str): API URL.
         output_file (str): Filename to save the JSON response.
     """
-    response = requests.get(url)
+    response = requests.get(url, verify=False) # skip verify
     if response.status_code == 200:
         with open(output_file, 'wb') as file:
             file.write(response.content)
